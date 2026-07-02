@@ -1,25 +1,32 @@
 {
-	"name": "cloudflare-worker-template",
+	"name": "notion-to-google-chat-bot",
 	"version": "0.0.0",
 	"private": true,
+	"type": "module",
 	"scripts": {
-		"deploy": "wrangler deploy",
-		"dev": "wrangler dev",
-		"start": "wrangler dev",
-		"test": "vitest",
+		"build": "vite build",
 		"cf-typegen": "wrangler types",
+		"check-types": "tsc --noEmit",
 		"check:fix": "biome check --write",
-		"check": "biome check"
-	},
-	"devDependencies": {
-		"@biomejs/biome": "^2.5.1",
-		"@cloudflare/vitest-pool-workers": "^0.16.20",
-		"@types/node": "^26.0.1",
-		"typescript": "^6.0.3",
-		"vitest": "^4.1.9",
-		"wrangler": "^4.105.0"
+		"check": "biome check",
+		"deploy": "bun run build && wrangler deploy",
+		"dev": "vite dev",
+		"preview": "bun run build && vite preview",
+		"start": "wrangler dev",
+		"test": "vitest"
 	},
 	"dependencies": {
 		"hono": "^4.12.27"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "^2.5.1",
+		"@cloudflare/vite-plugin": "^1.38.0",
+		"@cloudflare/vitest-pool-workers": "^0.16.20",
+		"@notionhq/client": "^5.22.0",
+		"@types/node": "^26.0.1",
+		"typescript": "^6.0.3",
+		"vite": "^8.0.14",
+		"vitest": "^4.1.9",
+		"wrangler": "^4.105.0"
 	}
 }
