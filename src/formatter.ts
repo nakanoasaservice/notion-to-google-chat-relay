@@ -68,12 +68,12 @@ function formatRichText(richText: RichTextItemResponse): string {
 				case "page":
 					return formatLink(
 						richText.plain_text,
-						`https://app.notion.com/${richText.mention.page.id.replaceAll("-", "")}`,
+						`https://app.notion.com/p/${richText.mention.page.id.replaceAll("-", "")}`,
 					);
 				case "database":
 					return formatLink(
 						richText.plain_text,
-						`https://app.notion.com/${richText.mention.database.id.replaceAll("-", "")}`,
+						`https://app.notion.com/p/${richText.mention.database.id.replaceAll("-", "")}`,
 					);
 				case "link_mention":
 					return formatLink(
