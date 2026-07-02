@@ -143,8 +143,14 @@ export function formatProperty(property: Property): string {
 					: `${escapeHtml(property.unique_id.prefix)}-${property.unique_id.number}`;
 		case "relation":
 			return (
-				property.relation.map((relation) => relation.id).join(", ") ||
-				"[No Relations]"
+				property.relation
+					.map((relation) =>
+						formatLink(
+							"Open in Notion",
+							`https://app.notion.com/p/${relation.id.replaceAll("-", "")}`,
+						),
+					)
+					.join(", ") || "[No Relations]"
 			);
 		case "people":
 			return property.people.map(formatPerson).join(", ") || "[No People]";

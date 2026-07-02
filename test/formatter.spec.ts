@@ -84,6 +84,21 @@ describe("formatProperty", () => {
 		);
 	});
 
+	it("renders relations as app.notion.com links without dashes", () => {
+		const property = {
+			type: "relation",
+			relation: [
+				{ id: "12345678-90ab-cdef-1234-567890abcdef" },
+				{ id: "abcdef12-3456-7890-abcd-ef1234567890" },
+			],
+		} as unknown as Property;
+
+		expect(formatProperty(property)).toBe(
+			'<a href="https://app.notion.com/p/1234567890abcdef1234567890abcdef">Open in Notion</a>, ' +
+				'<a href="https://app.notion.com/p/abcdef1234567890abcdef1234567890">Open in Notion</a>',
+		);
+	});
+
 	it("does not double-escape values inside rollup arrays", () => {
 		const property = {
 			type: "rollup",
