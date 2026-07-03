@@ -1,8 +1,8 @@
-# Notion to Google Chat Bot
+# Notion to Google Chat Relay
 
-Automatically forward Notion webhook events to Google Chat spaces with beautifully formatted cards — powered by Google Chat's incoming webhooks, so **no bot setup is required**.
+Automatically forward Notion webhook events to Google Chat spaces with beautifully formatted cards — powered by Google Chat's incoming webhooks.
 
-**🚀 Hosted instance (recommended): <https://notion-to-google-chat-bot.influ.workers.dev/>**
+**🚀 Hosted instance (recommended): <https://notion-to-google-chat-relay.influ.workers.dev/>**
 
 Built on [Cloudflare Workers](https://workers.cloudflare.com/) with [Hono](https://hono.dev/). The Google Chat version of [notion-to-discord-bot](https://github.com/nakanoasaservice/notion-to-discord-bot).
 
@@ -25,7 +25,7 @@ Set that URL as a "Send webhook" action in a Notion database automation. Every t
 
 1. **Create a Google Chat webhook**: In Google Chat, open your space → click the space name → **Apps & integrations** → **Webhooks** → **Add webhook** → name it → copy the webhook URL.
    (Incoming webhooks require a Google Workspace account.)
-2. **Generate your URL**: Open the [generator page](https://notion-to-google-chat-bot.influ.workers.dev/), paste the webhook URL, and optionally set a card title.
+2. **Generate your URL**: Open the [generator page](https://notion-to-google-chat-relay.influ.workers.dev/), paste the webhook URL, and optionally set a card title.
 3. **Configure Notion**: In your Notion database, go to **Settings → Automations → New action → Send webhook**, and paste the generated URL.
 
 > [!WARNING]
@@ -50,15 +50,15 @@ Title, rich text, URL, select, multi-select, date, checkbox, email, phone, numbe
 
 ## Self-hosting
 
-For most users the [hosted instance](https://notion-to-google-chat-bot.influ.workers.dev/) is all you need. If you prefer to run your own private instance, click the button below — Cloudflare will deploy it to your own Cloudflare Workers account in just a few clicks:
+For most users the [hosted instance](https://notion-to-google-chat-relay.influ.workers.dev/) is all you need. If you prefer to run your own private instance, click the button below — Cloudflare will deploy it to your own Cloudflare Workers account in just a few clicks:
 
-[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https%3A%2F%2Fgithub.com%2Fnakanoasaservice%2Fnotion-to-google-chat-bot)
+[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https%3A%2F%2Fgithub.com%2Fnakanoasaservice%2Fnotion-to-google-chat-relay)
 
 Or deploy manually:
 
 ```bash
-git clone https://github.com/nakanoasaservice/notion-to-google-chat-bot.git
-cd notion-to-google-chat-bot
+git clone https://github.com/nakanoasaservice/notion-to-google-chat-relay.git
+cd notion-to-google-chat-relay
 bun install
 bun run deploy
 ```

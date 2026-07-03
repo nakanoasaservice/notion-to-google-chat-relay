@@ -29,7 +29,7 @@ const notionPayload = {
 	},
 };
 
-describe("Notion to Google Chat Bot worker", () => {
+describe("Notion to Google Chat Relay worker", () => {
 	let mockFetch: ReturnType<typeof vi.fn>;
 
 	beforeEach(() => {

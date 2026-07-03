@@ -1,5 +1,5 @@
 {
-	"name": "notion-to-google-chat-bot",
+	"name": "notion-to-google-chat-relay",
 	"version": "0.0.0",
 	"private": true,
 	"type": "module",

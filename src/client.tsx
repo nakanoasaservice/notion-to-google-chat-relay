@@ -171,7 +171,7 @@ function App() {
 		>
 			<header style={{ marginBottom: "2rem", textAlign: "center" }}>
 				<h1 style={{ fontSize: "2.5rem", marginBottom: "0.5rem" }}>
-					Notion to Google Chat Bot
+					Notion to Google Chat Relay
 				</h1>
 				<div
 					style={{
@@ -183,7 +183,7 @@ function App() {
 					}}
 				>
 					<a
-						href="https://github.com/nakanoasaservice/notion-to-google-chat-bot"
+						href="https://github.com/nakanoasaservice/notion-to-google-chat-relay"
 						target="_blank"
 						rel="noreferrer"
 						style={{
@@ -213,7 +213,7 @@ function App() {
 						</svg>
 					</a>
 					<a
-						href="https://deploy.workers.cloudflare.com/?url=https%3A%2F%2Fgithub.com%2Fnakanoasaservice%2Fnotion-to-google-chat-bot"
+						href="https://deploy.workers.cloudflare.com/?url=https%3A%2F%2Fgithub.com%2Fnakanoasaservice%2Fnotion-to-google-chat-relay"
 						target="_blank"
 						rel="noreferrer"
 						style={{ display: "inline-block" }}
@@ -253,11 +253,10 @@ function App() {
 						How it works
 					</h2>
 					<p>
-						This bot acts as a bridge between Notion and Google Chat. When you
-						configure a webhook in Notion (e.g., from a database automation), it
-						sends data to this worker, which formats it as a card and posts it
-						to your Google Chat space using the space's incoming webhook — no
-						bot setup required.
+						This relay sits between Notion and Google Chat. When you configure a
+						webhook in Notion (e.g., from a database automation), it sends data
+						to this worker, which formats it as a card and posts it to your
+						Google Chat space using the space's incoming webhook.
 					</p>
 				</section>
 
