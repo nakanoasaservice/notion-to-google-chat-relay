@@ -20,6 +20,65 @@ export function escapeHtml(text: string): string {
 		.replaceAll('"', "&quot;");
 }
 
+const TRUNCATION_SUFFIX = "…";
+
+// Google Chat documents no per-field character limits for cards v2 — the hard
+// limit is 32,000 bytes per message (including cards). The caps below keep
+// long values readable and the message safely under that limit.
+export function truncate(text: string): string {
+	const maxLength = 200;
+	const chars = [...text];
+	if (chars.length <= maxLength) {
+		return text;
+	}
+	return (
+		chars.slice(0, maxLength - TRUNCATION_SUFFIX.length).join("") +
+		TRUNCATION_SUFFIX
+	);
+}
+
+// Google Chat renders card text as HTML, so truncation counts a tag as zero
+// characters and an escaped entity as one — cutting inside either would
+// corrupt the markup — and re-closes an <a> left open by the cut.
+export function truncateHtml(html: string): string {
+	const maxLength = 1000;
+	const tokens = html.match(/<[^>]*>|&(?:amp|lt|gt|quot);|./gsu) ?? [];
+	const visibleLength = tokens.filter((token) => !token.startsWith("<")).length;
+	if (visibleLength <= maxLength) {
+		return html;
+	}
+
+	const budget = maxLength - TRUNCATION_SUFFIX.length;
+	let result = "";
+	let visible = 0;
+	let inLink = false;
+	for (const token of tokens) {
+		if (visible >= budget) {
+			break;
+		}
+		if (token.startsWith("<")) {
+			result += token;
+			if (token.startsWith("<a ")) {
+				inLink = true;
+			} else if (token === "</a>") {
+				inLink = false;
+			}
+		} else {
+			result += token;
+			visible++;
+		}
+	}
+
+	// Drop a link opened right at the cut so we don't emit an "…"-only link
+	const withoutDanglingOpen = result.replace(/<a [^>]*>$/, "");
+	if (withoutDanglingOpen !== result) {
+		result = withoutDanglingOpen;
+		inLink = false;
+	}
+
+	return result + TRUNCATION_SUFFIX + (inLink ? "</a>" : "");
+}
+
 function formatLink(text: string, url: string): string {
 	return `<a href="${escapeHtml(url)}">${escapeHtml(text)}</a>`;
 }

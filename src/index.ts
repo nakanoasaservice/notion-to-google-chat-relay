@@ -1,7 +1,7 @@
 import type { PageObjectResponse } from "@notionhq/client/build/src/api-endpoints";
 import { Hono } from "hono";
 
-import { formatProperty } from "./formatter";
+import { formatProperty, truncate, truncateHtml } from "./formatter";
 
 interface NotionWebhookBody {
 	data: PageObjectResponse;
@@ -88,15 +88,15 @@ app.post("/:spaceId", async (c) => {
 			{
 				cardId: "notion-page",
 				card: {
-					...(title ? { header: { title } } : {}),
+					...(title ? { header: { title: truncate(title) } } : {}),
 					sections: [
 						{
 							widgets: [
 								...Object.entries(body.data.properties).map(
 									([name, property]): Widget => ({
 										decoratedText: {
-											topLabel: name,
-											text: formatProperty(property),
+											topLabel: truncate(name),
+											text: truncateHtml(formatProperty(property)),
 											wrapText: true,
 										},
 									}),

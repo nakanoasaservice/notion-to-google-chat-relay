@@ -1,6 +1,11 @@
 import { describe, expect, it } from "vitest";
 
-import { escapeHtml, formatProperty } from "../src/formatter";
+import {
+	escapeHtml,
+	formatProperty,
+	truncate,
+	truncateHtml,
+} from "../src/formatter";
 
 type Property = Parameters<typeof formatProperty>[0];
 
@@ -114,5 +119,47 @@ describe("formatProperty", () => {
 		} as unknown as Property;
 
 		expect(formatProperty(property)).toBe("a &amp; b");
+	});
+});
+
+describe("truncate", () => {
+	it("returns text unchanged when within the 200-char limit", () => {
+		expect(truncate("a".repeat(200))).toBe("a".repeat(200));
+	});
+
+	it("truncates over-limit text to 200 chars ending with …", () => {
+		expect(truncate("a".repeat(201))).toBe(`${"a".repeat(199)}…`);
+	});
+
+	it("counts astral characters as one character", () => {
+		expect(truncate("😀".repeat(201))).toBe(`${"😀".repeat(199)}…`);
+	});
+});
+
+describe("truncateHtml", () => {
+	it("returns text unchanged when within the 1000-char limit", () => {
+		expect(truncateHtml("a".repeat(1000))).toBe("a".repeat(1000));
+	});
+
+	it("truncates over-limit plain text to 1000 chars ending with …", () => {
+		expect(truncateHtml("a".repeat(1001))).toBe(`${"a".repeat(999)}…`);
+	});
+
+	it("counts an escaped entity as one character", () => {
+		expect(truncateHtml("&amp;".repeat(1000))).toBe("&amp;".repeat(1000));
+		expect(truncateHtml("&amp;".repeat(1001))).toBe(`${"&amp;".repeat(999)}…`);
+	});
+
+	it("does not count tags and closes an <a> cut open", () => {
+		const link = (text: string) => `<a href="https://example.com">${text}</a>`;
+		expect(truncateHtml(link("a".repeat(1000)))).toBe(link("a".repeat(1000)));
+		expect(truncateHtml(link("a".repeat(1001)))).toBe(
+			link(`${"a".repeat(999)}…`),
+		);
+	});
+
+	it("drops a link opened right at the cut", () => {
+		const html = `${"a".repeat(999)}<a href="https://example.com">bcd</a>`;
+		expect(truncateHtml(html)).toBe(`${"a".repeat(999)}…`);
 	});
 });
