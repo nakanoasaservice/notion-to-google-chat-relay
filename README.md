@@ -35,14 +35,14 @@ Set that URL as a "Send webhook" action in a Notion database automation. Every t
 
 There is no database and no server-side state. Everything is encoded in the URL:
 
-| Part | Where | Description |
-|---|---|---|
-| `{SPACE_ID}` | path | Google Chat space ID from the webhook URL |
-| `key` | query | API key from the webhook URL |
-| `token` | query | Webhook token from the webhook URL |
-| `title` | query | Optional card header title |
+| Part         | Where | Description                               |
+| ------------ | ----- | ----------------------------------------- |
+| `{SPACE_ID}` | path  | Google Chat space ID from the webhook URL |
+| `key`        | query | API key from the webhook URL              |
+| `token`      | query | Webhook token from the webhook URL        |
+| `title`      | query | Optional card header title                |
 
-Opening a generated URL in the browser pre-fills the generator form again — the URL *is* the settings page.
+Opening a generated URL in the browser pre-fills the generator form again — the URL _is_ the settings page.
 
 ## Supported Notion properties
 
@@ -59,28 +59,36 @@ Or deploy manually:
 ```bash
 git clone https://github.com/nakanoasaservice/notion-to-google-chat-relay.git
 cd notion-to-google-chat-relay
-bun install
-bun run deploy
+pnpm install
+pnpm run deploy
 ```
 
 No secrets are needed — authentication lives entirely in the webhook URL.
 
 ## Development
 
-| Command | Description |
-|---------|-------------|
-| `bun run dev` | Start Vite dev server (worker + UI) |
-| `bun run build` | Build worker + static assets |
-| `bun run preview` | Build and preview locally |
-| `bun run deploy` | Build and deploy to Cloudflare Workers |
-| `bun run test` | Run tests |
-| `bun run check` | Lint and format check |
-| `bun run check:fix` | Auto-fix lint and format issues |
-| `bun run check-types` | Type check |
-| `bun run cf-typegen` | Generate Cloudflare binding types |
+| Command                | Description                            |
+| ---------------------- | -------------------------------------- |
+| `pnpm run dev`         | Start Vite dev server (worker + UI)    |
+| `pnpm run build`       | Build worker + static assets           |
+| `pnpm run preview`     | Build and preview locally              |
+| `pnpm run deploy`      | Build and deploy to Cloudflare Workers |
+| `pnpm run test`        | Run tests                              |
+| `pnpm run check`       | Lint and format check                  |
+| `pnpm run check:fix`   | Auto-fix lint and format issues        |
+| `pnpm run check-types` | Type check                             |
+| `pnpm run cf-typegen`  | Generate Cloudflare binding types      |
 
 ## Known limitations
 
 - Google Chat messages are limited to 32,000 bytes; pages with very large property values may fail to send (the error is logged in Workers Logs).
 - Incoming webhooks are rate-limited to about 1 request per second per space.
 - Webhook messages are one-way; interactive card actions other than link buttons are not supported.
+
+## Development toolchain
+
+Use Node.js 24 and the pnpm version pinned in `package.json`.
+Run `pnpm install --frozen-lockfile`, `pnpm check`, `pnpm test`, and `pnpm build`.
+Vite+ provides formatting, linting, type checks, tests and builds. Tests run
+locally in the Cloudflare Workers runtime. Use `pnpm run dev` to develop and
+`pnpm run cf-typegen` to regenerate Worker binding types.

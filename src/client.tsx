@@ -40,17 +40,14 @@ function parseWebhookUrl(input: string): ParsedWebhook {
 // Reconstruct the original Google Chat webhook URL from our worker URL
 // so opening a generated URL pre-fills the form (URL = settings page)
 function getWebhookUrlFromLocation(): string {
-	const spaceId =
-		window.location.pathname.replace(/^\//, "").split("/")[0] || "";
+	const spaceId = window.location.pathname.replace(/^\//, "").split("/")[0] || "";
 	const searchParams = new URLSearchParams(window.location.search);
 	const key = searchParams.get("key");
 	const token = searchParams.get("token");
 
 	if (!spaceId || !key || !token) return "";
 
-	const url = new URL(
-		`https://chat.googleapis.com/v1/spaces/${spaceId}/messages`,
-	);
+	const url = new URL(`https://chat.googleapis.com/v1/spaces/${spaceId}/messages`);
 	url.searchParams.set("key", key);
 	url.searchParams.set("token", token);
 	return url.toString();
@@ -87,13 +84,9 @@ function updateUrl(parsed: ParsedWebhook, title: string) {
 }
 
 function App() {
-	const [webhookUrl, setWebhookUrl] = useState(() =>
-		getWebhookUrlFromLocation(),
-	);
+	const [webhookUrl, setWebhookUrl] = useState(() => getWebhookUrlFromLocation());
 	const [title, setTitle] = useState(() => getTitleFromUrl());
-	const [copyState, setCopyState] = useState<"idle" | "copied" | "failed">(
-		"idle",
-	);
+	const [copyState, setCopyState] = useState<"idle" | "copied" | "failed">("idle");
 
 	const parsed = useMemo(() => parseWebhookUrl(webhookUrl), [webhookUrl]);
 	const isValid = webhookUrl === "" || parsed.ok;
@@ -170,9 +163,7 @@ function App() {
 			}}
 		>
 			<header style={{ marginBottom: "2rem", textAlign: "center" }}>
-				<h1 style={{ fontSize: "2.5rem", marginBottom: "0.5rem" }}>
-					Notion to Google Chat Relay
-				</h1>
+				<h1 style={{ fontSize: "2.5rem", marginBottom: "0.5rem" }}>Notion to Google Chat Relay</h1>
 				<div
 					style={{
 						display: "flex",
@@ -236,56 +227,43 @@ function App() {
 						marginBottom: "0.5rem",
 					}}
 				>
-					👆 Click to deploy your own private instance to Cloudflare Workers
-					instantly.
+					👆 Click to deploy your own private instance to Cloudflare Workers instantly.
 				</p>
 				<p style={{ fontSize: "1.2rem", color: "#666" }}>
-					Automatically forward Notion webhook events to Google Chat spaces with
-					beautifully formatted cards.
+					Automatically forward Notion webhook events to Google Chat spaces with beautifully
+					formatted cards.
 				</p>
 			</header>
 
 			<main>
 				<section style={{ marginBottom: "3rem" }}>
-					<h2
-						style={{ borderBottom: "1px solid #eee", paddingBottom: "0.5rem" }}
-					>
-						How it works
-					</h2>
+					<h2 style={{ borderBottom: "1px solid #eee", paddingBottom: "0.5rem" }}>How it works</h2>
 					<p>
-						This relay sits between Notion and Google Chat. When you configure a
-						webhook in Notion (e.g., from a database automation), it sends data
-						to this worker, which formats it as a card and posts it to your
-						Google Chat space using the space's incoming webhook.
+						This relay sits between Notion and Google Chat. When you configure a webhook in Notion
+						(e.g., from a database automation), it sends data to this worker, which formats it as a
+						card and posts it to your Google Chat space using the space's incoming webhook.
 					</p>
 				</section>
 
 				<section style={{ marginBottom: "3rem" }}>
-					<h2
-						style={{ borderBottom: "1px solid #eee", paddingBottom: "0.5rem" }}
-					>
-						Setup Guide
-					</h2>
+					<h2 style={{ borderBottom: "1px solid #eee", paddingBottom: "0.5rem" }}>Setup Guide</h2>
 					<ol style={{ paddingLeft: "1.5rem" }}>
 						<li style={{ marginBottom: "0.5rem" }}>
-							<strong>Create a Google Chat Webhook:</strong> In Google Chat,
-							open your space, click the space name →{" "}
-							<em>Apps &amp; integrations</em> → <em>Webhooks</em> →{" "}
+							<strong>Create a Google Chat Webhook:</strong> In Google Chat, open your space, click
+							the space name → <em>Apps &amp; integrations</em> → <em>Webhooks</em> →{" "}
 							<em>Add webhook</em>, give it a name, and copy the webhook URL.
 						</li>
 						<li style={{ marginBottom: "0.5rem" }}>
-							<strong>Generate your URL:</strong> Paste the webhook URL into the
-							form below and optionally set a card title.
+							<strong>Generate your URL:</strong> Paste the webhook URL into the form below and
+							optionally set a card title.
 						</li>
 						<li style={{ marginBottom: "0.5rem" }}>
-							<strong>Copy the generated URL:</strong> It contains your webhook
-							credentials, so treat it as secret — just like the webhook URL
-							itself.
+							<strong>Copy the generated URL:</strong> It contains your webhook credentials, so
+							treat it as secret — just like the webhook URL itself.
 						</li>
 						<li style={{ marginBottom: "0.5rem" }}>
-							<strong>Configure Notion:</strong> In your Notion database, go to
-							Settings → Automations → New action → Send webhook, and paste the
-							generated URL.
+							<strong>Configure Notion:</strong> In your Notion database, go to Settings →
+							Automations → New action → Send webhook, and paste the generated URL.
 						</li>
 					</ol>
 				</section>
@@ -333,9 +311,7 @@ function App() {
 								id="webhookUrl"
 								placeholder="https://chat.googleapis.com/v1/spaces/.../messages?key=...&token=..."
 								value={webhookUrl}
-								onInput={(e) =>
-									setWebhookUrl((e.target as HTMLInputElement).value)
-								}
+								onInput={(e) => setWebhookUrl((e.target as HTMLInputElement).value)}
 								style={{
 									width: "100%",
 									padding: "0.75rem",
@@ -380,10 +356,7 @@ function App() {
 								onInput={(e) => {
 									const target = e.currentTarget as HTMLTextAreaElement;
 									if (target) {
-										const valueWithoutNewlines = target.value.replace(
-											/\n/g,
-											"",
-										);
+										const valueWithoutNewlines = target.value.replace(/\n/g, "");
 										setTitle(valueWithoutNewlines);
 									}
 								}}
@@ -511,11 +484,7 @@ function App() {
 								minHeight: "1.2rem",
 							}}
 						>
-							{copyState === "copied"
-								? "Copied!"
-								: copyState === "failed"
-									? "Failed to copy"
-									: ""}
+							{copyState === "copied" ? "Copied!" : copyState === "failed" ? "Failed to copy" : ""}
 						</small>
 					</div>
 				</section>
@@ -524,6 +493,6 @@ function App() {
 	);
 }
 
-// biome-ignore lint/style/noNonNullAssertion: root is guaranteed to be in the document
+// oxlint-disable-next-line typescript/no-non-null-assertion -- root is guaranteed to be in the document
 const root = document.getElementById("root")!;
 render(<App />, root);

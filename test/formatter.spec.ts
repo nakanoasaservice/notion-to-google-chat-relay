@@ -1,18 +1,10 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it } from "vite-plus/test";
 
-import {
-	escapeHtml,
-	formatProperty,
-	truncate,
-	truncateHtml,
-} from "../src/formatter";
+import { escapeHtml, formatProperty, truncate, truncateHtml } from "../src/formatter";
 
 type Property = Parameters<typeof formatProperty>[0];
 
-function richText(
-	content: string,
-	link: { url: string } | null = null,
-): object {
+function richText(content: string, link: { url: string } | null = null): object {
 	return {
 		type: "text",
 		text: { content, link },
@@ -42,9 +34,7 @@ describe("formatProperty", () => {
 			rich_text: [richText("Docs", { url: "https://example.com" })],
 		} as unknown as Property;
 
-		expect(formatProperty(property)).toBe(
-			'<a href="https://example.com">Docs</a>',
-		);
+		expect(formatProperty(property)).toBe('<a href="https://example.com">Docs</a>');
 	});
 
 	it("escapes HTML in plain rich text", () => {
@@ -153,9 +143,7 @@ describe("truncateHtml", () => {
 	it("does not count tags and closes an <a> cut open", () => {
 		const link = (text: string) => `<a href="https://example.com">${text}</a>`;
 		expect(truncateHtml(link("a".repeat(1000)))).toBe(link("a".repeat(1000)));
-		expect(truncateHtml(link("a".repeat(1001)))).toBe(
-			link(`${"a".repeat(999)}…`),
-		);
+		expect(truncateHtml(link("a".repeat(1001)))).toBe(link(`${"a".repeat(999)}…`));
 	});
 
 	it("drops a link opened right at the cut", () => {

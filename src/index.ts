@@ -40,9 +40,7 @@ async function sendGoogleChatMessage(
 	token: string,
 	message: GoogleChatMessage,
 ) {
-	const url = new URL(
-		`https://chat.googleapis.com/v1/spaces/${spaceId}/messages`,
-	);
+	const url = new URL(`https://chat.googleapis.com/v1/spaces/${spaceId}/messages`);
 	// searchParams.set encodes exactly once ("=" -> "%3D"), matching the URL Google issues
 	url.searchParams.set("key", key);
 	url.searchParams.set("token", token);
@@ -92,15 +90,13 @@ app.post("/:spaceId", async (c) => {
 					sections: [
 						{
 							widgets: [
-								...Object.entries(body.data.properties).map(
-									([name, property]): Widget => ({
-										decoratedText: {
-											topLabel: truncate(name),
-											text: truncateHtml(formatProperty(property)),
-											wrapText: true,
-										},
-									}),
-								),
+								...Object.entries(body.data.properties).map(([name, property]): Widget => ({
+									decoratedText: {
+										topLabel: truncate(name),
+										text: truncateHtml(formatProperty(property)),
+										wrapText: true,
+									},
+								})),
 								{
 									buttonList: {
 										buttons: [

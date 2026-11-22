@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vite-plus/test";
 
 import app from "../src/index";
 
@@ -38,7 +38,7 @@ describe("Notion to Google Chat Relay worker", () => {
 			status: 200,
 			text: async () => "",
 		});
-		global.fetch = mockFetch as unknown as typeof global.fetch;
+		globalThis.fetch = mockFetch as unknown as typeof globalThis.fetch;
 	});
 
 	it("forwards the Notion payload as a cardsV2 message", async () => {
@@ -53,10 +53,7 @@ describe("Notion to Google Chat Relay worker", () => {
 		expect(response.status).toBe(204);
 		expect(mockFetch).toHaveBeenCalledTimes(1);
 
-		const [calledUrl, init] = mockFetch.mock.calls[0] as [
-			URL | string,
-			RequestInit,
-		];
+		const [calledUrl, init] = mockFetch.mock.calls[0] as [URL | string, RequestInit];
 
 		const url = new URL(String(calledUrl));
 		expect(url.origin).toBe("https://chat.googleapis.com");
@@ -73,7 +70,8 @@ describe("Notion to Google Chat Relay worker", () => {
 			"Content-Type": "application/json; charset=UTF-8",
 		});
 
-		const body = JSON.parse(String(init.body));
+		if (typeof init.body !== "string") throw new Error("Expected a JSON request body");
+		const body = JSON.parse(init.body);
 		const card = body.cardsV2[0].card;
 		expect(body.cardsV2[0].cardId).toBe("notion-page");
 		expect(card.header).toEqual({ title: "Task Updated" });
@@ -107,7 +105,8 @@ describe("Notion to Google Chat Relay worker", () => {
 		expect(response.status).toBe(204);
 
 		const init = mockFetch.mock.calls[0]?.[1] as RequestInit;
-		const body = JSON.parse(String(init.body));
+		if (typeof init.body !== "string") throw new Error("Expected a JSON request body");
+		const body = JSON.parse(init.body);
 		expect(body.cardsV2[0].card.header).toBeUndefined();
 	});
 
