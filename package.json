@@ -23,7 +23,7 @@
 		"@cloudflare/vitest-plugin": "^1.8.4",
 		"@notionhq/client": "^5.22.0",
 		"@types/node": "^26.1.0",
-		"typescript": "^6.0.3",
+		"typescript": "^7.0.2",
 		"vite": "catalog:",
 		"vite-plus": "catalog:",
 		"vitest": "catalog:",
