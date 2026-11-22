@@ -16,18 +16,18 @@
 		"test": "vp test run"
 	},
 	"dependencies": {
-		"hono": "^4.12.27"
+		"hono": "^4.13.19"
 	},
 	"devDependencies": {
-		"@cloudflare/vite-plugin": "^1.38.0",
+		"@cloudflare/vite-plugin": "^1.70.0",
 		"@cloudflare/vitest-plugin": "^1.8.4",
-		"@notionhq/client": "^5.22.0",
-		"@types/node": "^26.1.0",
+		"@notionhq/client": "^5.31.1",
+		"@types/node": "^26.6.6",
 		"typescript": "^6.0.3",
 		"vite": "catalog:",
 		"vite-plus": "catalog:",
 		"vitest": "catalog:",
-		"wrangler": "^4.106.0"
+		"wrangler": "^4.165.0"
 	},
 	"devEngines": {
 		"runtime": {
