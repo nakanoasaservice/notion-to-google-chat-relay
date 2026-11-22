@@ -27,14 +27,12 @@ const TRUNCATION_SUFFIX = "…";
 // long values readable and the message safely under that limit.
 export function truncate(text: string): string {
 	const maxLength = 200;
+	// oxlint-disable-next-line typescript/no-misused-spread -- Preserve code-point-based truncation.
 	const chars = [...text];
 	if (chars.length <= maxLength) {
 		return text;
 	}
-	return (
-		chars.slice(0, maxLength - TRUNCATION_SUFFIX.length).join("") +
-		TRUNCATION_SUFFIX
-	);
+	return chars.slice(0, maxLength - TRUNCATION_SUFFIX.length).join("") + TRUNCATION_SUFFIX;
 }
 
 // Google Chat renders card text as HTML, so truncation counts a tag as zero
@@ -118,10 +116,7 @@ function formatRichText(richText: RichTextItemResponse): string {
 				case "date":
 					return formatDate(richText.mention.date);
 				case "link_preview":
-					return formatLink(
-						richText.plain_text,
-						richText.mention.link_preview.url,
-					);
+					return formatLink(richText.plain_text, richText.mention.link_preview.url);
 				case "template_mention":
 					return escapeHtml(richText.plain_text);
 				case "page":
@@ -140,10 +135,7 @@ function formatRichText(richText: RichTextItemResponse): string {
 						richText.mention.link_mention.href,
 					);
 				case "custom_emoji":
-					return formatLink(
-						richText.mention.custom_emoji.name,
-						richText.mention.custom_emoji.url,
-					);
+					return formatLink(richText.mention.custom_emoji.name, richText.mention.custom_emoji.url);
 				default:
 					return "[Unsupported Mention Type]";
 			}
@@ -163,14 +155,11 @@ export function formatProperty(property: Property): string {
 		case "url":
 			return property.url ? formatLink(property.url, property.url) : "[No URL]";
 		case "select":
-			return property.select
-				? escapeHtml(property.select.name)
-				: "[No Selection]";
+			return property.select ? escapeHtml(property.select.name) : "[No Selection]";
 		case "multi_select":
 			return (
-				property.multi_select
-					?.map((select) => escapeHtml(select.name))
-					.join(", ") || "[No Selections]"
+				property.multi_select?.map((select) => escapeHtml(select.name)).join(", ") ||
+				"[No Selections]"
 			);
 		case "date":
 			return formatDate(property.date);
@@ -179,9 +168,7 @@ export function formatProperty(property: Property): string {
 		case "email":
 			return property.email ? escapeHtml(property.email) : "[No Email]";
 		case "phone_number":
-			return property.phone_number
-				? escapeHtml(property.phone_number)
-				: "[No Phone]";
+			return property.phone_number ? escapeHtml(property.phone_number) : "[No Phone]";
 		case "number":
 			return property.number?.toString() ?? "[No Number]";
 		case "status":
@@ -257,10 +244,7 @@ export function formatProperty(property: Property): string {
 				case "date":
 					return formatDate(property.rollup.date);
 				case "array":
-					return (
-						property.rollup.array?.map(formatProperty).join(", ") ??
-						"[Empty Rollup Array]"
-					);
+					return property.rollup.array?.map(formatProperty).join(", ") ?? "[Empty Rollup Array]";
 				default:
 					return "[Unsupported Rollup Type]";
 			}
@@ -277,8 +261,7 @@ export function formatProperty(property: Property): string {
 		case "place":
 			return property.place
 				? property.place.name
-					? property.place.address == null ||
-						property.place.name === property.place.address
+					? property.place.address == null || property.place.name === property.place.address
 						? escapeHtml(property.place.name)
 						: escapeHtml(`${property.place.name}\n${property.place.address}`)
 					: property.place.address

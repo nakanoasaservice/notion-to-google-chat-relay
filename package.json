@@ -4,29 +4,36 @@
 	"private": true,
 	"type": "module",
 	"scripts": {
-		"build": "vite build",
+		"build": "vp build",
 		"cf-typegen": "wrangler types",
 		"check-types": "tsc --noEmit",
-		"check:fix": "biome check --write",
-		"check": "biome check",
-		"deploy": "bun run build && wrangler deploy",
-		"dev": "vite dev",
-		"preview": "bun run build && vite preview",
+		"check:fix": "vp check --fix",
+		"check": "vp check",
+		"deploy": "pnpm run build && wrangler deploy",
+		"dev": "vp dev",
+		"preview": "pnpm run build && vp preview",
 		"start": "wrangler dev",
-		"test": "vitest"
+		"test": "vp test run"
 	},
 	"dependencies": {
 		"hono": "^4.12.27"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "^2.5.2",
 		"@cloudflare/vite-plugin": "^1.38.0",
-		"@cloudflare/vitest-pool-workers": "^0.17.0",
+		"@cloudflare/vitest-plugin": "^1.8.4",
 		"@notionhq/client": "^5.22.0",
 		"@types/node": "^26.1.0",
 		"typescript": "^6.0.3",
-		"vite": "^8.0.14",
-		"vitest": "^4.1.9",
+		"vite": "catalog:",
+		"vite-plus": "catalog:",
+		"vitest": "catalog:",
 		"wrangler": "^4.106.0"
-	}
+	},
+	"devEngines": {
+		"runtime": {
+			"name": "node",
+			"version": "24.22.1"
+		}
+	},
+	"packageManager": "pnpm@12.21.0"
 }
